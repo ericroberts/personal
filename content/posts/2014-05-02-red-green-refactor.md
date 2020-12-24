@@ -1,6 +1,6 @@
 ---
-layout: post
 title: Red, Green, Refactor
+date: 2014-05-02
 ---
 
 ![Red, Green, Refactor](/images/posts/red-green-refactor.png)

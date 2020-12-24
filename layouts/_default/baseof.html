@@ -1,0 +1,13 @@
+<!doctype html>
+<html>
+  <head>
+    <title>Eric Roberts</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    {{ $styles := resources.Get "css/main.css" }}
+    {{ $styles = $styles | resources.PostCSS (dict "inlineImports" true) }}
+    <link href="{{ $styles.Permalink }}" rel="stylesheet" />
+  </head>
+  <body class="p-8 bg-dracula-background text-dracula-foreground">
+    {{ block "main" . }}{{ end }}
+  </body>
+</html>

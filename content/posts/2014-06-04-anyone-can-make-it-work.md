@@ -1,6 +1,6 @@
 ---
-layout: post
 title:  Anyone Can Make it Work Right Now
+date: 2014-06-04
 ---
 
 One of my favourite parts from Sandi Metz's book [Practical Object-Oriented Design in Ruby](http://www.poodr.com/)</cite>. Getting it to work is the boring part.

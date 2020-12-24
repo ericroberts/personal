@@ -1,6 +1,7 @@
 ---
-layout: post
 title: O Captain! My Captain!
+date: 2014-08-16
+visible: no
 ---
 
 > O Captain! My Captain! our fearful trip is done;<br>

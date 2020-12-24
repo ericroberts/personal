@@ -1,8 +1,6 @@
 ---
-layout: post
 title:  "How to Turn Your Raspberry Pi Into a Wireless AirPlay Reciever"
 date:   2013-11-04
-categories: raspberry pi
 ---
 
 A while ago I had some brilliant idea to do something, so I bought two [Raspberry Pi's](http://www.raspberrypi.org/). Because I never follow up on things, they were still sitting in their packaging nearly a year later. Then someone brought one into [ArtBarn Labs](http://artbarnlabs.com/), where I work, and we started using it as an AirPlay receiver. It was pretty cool, so I demoed it at [DemoCampGuelph](http://www.democampguelph.com/). But it took a while to get working, so I figured I'd document the process.
@@ -50,16 +48,16 @@ Ok now we're going to upgrade everything because that's what the cool kids are d
 
 So do this:
 
-{% highlight bash %}
+{{<highlight bash>}}
 sudo apt-get update
 sudo apt-get upgrade
-{% endhighlight %}
+{{</highlight>}}
 
 That should take a while. When it's done, do this:
 
-{% highlight bash %}
+{{<highlight bash>}}
 sudo rpi-update
-{% endhighlight %}
+{{</highlight>}}
 
 That should also take a while.
 
@@ -67,9 +65,9 @@ That should also take a while.
 
 All done? Good, now let's install a bunch of stuff. I don't know what it does, but I copied and pasted it off the internet, so how bad can it be? By the way, I got this stuff from a Lifehacker guide: [Turn a Raspberry Pi Into an AirPlay Receiver for Streaming Music in Your Living Room](http://lifehacker.com/5978594/turn-a-raspberry-pi-into-an-airplay-receiver-for-streaming-music-in-your-living-room). Title sounds an awful lot like mine doesn't it? I'm 90% just ripping off their article. 
 
-{% highlight bash %}
+{{<highlight bash>}}
 sudo apt-get install git libao-dev libssl-dev libcrypt-openssl-rsa-perl libio-socket-inet6-perl libwww-perl avahi-utils libmodule-build-perl
-{% endhighlight %}
+{{</highlight>}}
 
 Ok, so now we've installed a bunch of stuff, hopefully we didn't mess shit up.
 
@@ -81,23 +79,23 @@ This next bit I found on a Raspberry Pi forum post: [Wifi setup with the TP Link
 
 Type this in your terminal so we know what version of Raspian we're using:
 
-{% highlight bash %}
+{{<highlight bash>}}
 uname -a
-{% endhighlight %}
+{{</highlight>}}
 
 Mine says this:
-{% highlight bash %}
+{{<highlight bash>}}
 Linux raspberrypi 3.6.11+ #557 PREEMPT Wed Oct 2 18:49:09 BST 2013 armv6l GNU/Linux
-{% endhighlight %}
+{{</highlight>}}
 
 OK, now do this:
-{% highlight bash %}
+{{<highlight bash>}}
 wget https://dl.dropboxusercontent.com/u/80256631/8188eu-20130830.tar.gz
 tar -zxvf 8188eu-20130830.tar.gz
 sudo install -p -m 644 8188eu.ko /lib/modules/3.6.11+/kernel/drivers/net/wireless
 sudo insmod /lib/modules/3.6.11+/kernel/drivers/net/wireless/8188eu.ko
 sudo depmod -a
-{% endhighlight %}
+{{</highlight>}}
 
 If `uname -a` returned something different than mine did, you'll want to visit that forum link and see which driver to install.
 
@@ -111,33 +109,33 @@ So now we can finally get to that awesome AirPlay receiver program. This is from
 
 Let's do this:
 
-{% highlight bash %}
+{{<highlight bash>}}
 git clone https://github.com/hendrikw82/shairport.git
 cd shairport
 make
-{% endhighlight %}
+{{</highlight>}}
 
 We still have more to do, but we should be able to see if this thing at least works now. Do the following:
 
-{% highlight bash %}
+{{<highlight bash>}}
 ./shairport.pl -a AirPi
-{% endhighlight %}
+{{</highlight>}}
 
 You can replace AirPi with anything you want. For example I have KitchenPi and LivingPi.
 
 It didn't work right? If it did, you can ignore this next part. If you got an error along the lines of `Can't locate Net/SDP.pm` then we need to run the following:
 
-{% highlight bash %}
+{{<highlight bash>}}
 cpan install Net::SDP
-{% endhighlight %}
+{{</highlight>}}
 
 More details about that last thing can be found on StackExchange: [Problem installing Net::SDP](http://raspberrypi.stackexchange.com/questions/5310/problem-installing-netsdp).
 
 OK, now you should be able to actually do that thing we tried to do:
 
-{% highlight bash %}
+{{<highlight bash>}}
 ./shairport.pl -a LiedToMeTheFirstTimePi
-{% endhighlight %}
+{{</highlight>}}
 
 Hooray it works! You should be able to see LiedToMeTheFirstTimePi as an AirPlay source from your Mac or iOS device.
 
@@ -145,26 +143,26 @@ You could keep running that command everytime you booted your Pi in order to mak
 
 Once again, we'll copy stuff from the Lifehacker article:
 
-{% highlight bash %}
+{{<highlight bash>}}
 cd shairport
 make install
 cp shairport.init.sample /etc/init.d/shairport
 cd /etc/init.d
 chmod a+x shairport
 update-rc.d shairport defaults
-{% endhighlight %}
+{{</highlight>}}
 
 Then we need to add it as a launch item.
 
-{% highlight bash %}
+{{<highlight bash>}}
 sudo nano shairport
-{% endhighlight %}
+{{</highlight>}}
 
 From Lifehacker: "This loads up Shairport file we need to edit. Look through the file for the "DAEMON_ARGS" line, and change it so it looks like this":
 
-{% highlight bash %}
+{{<highlight bash>}}
 DAEMON_ARGS="-w $PIDFILE -a AirPi"
-{% endhighlight %}
+{{</highlight>}}
 
 Again, change AirPi to whatever you want it to be called when you view a list of AirPlay receivers.
 

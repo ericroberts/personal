@@ -1,0 +1,15 @@
+<!doctype html>
+<html>
+  <head>
+    <title>Eric Roberts</title>
+    {{ $styles := resources.Get "css/main.css" }}
+    {{ $styles = $styles | resources.PostCSS (dict "inlineImports" true) }}
+    <link href="{{ $styles.Permalink }}" rel="stylesheet" />
+  </head>
+  <body>
+    <header>
+      <h1>Hi, I'm Eric Roberts</h1>
+    </header>
+    {{ .Content }}
+  </body>
+</html>

@@ -1,21 +1,19 @@
 ---
-layout: post
 title: You're Already Doing TDD
+date: 2014-05-27
+visible: no
 ---
 
-![You're Already Doing TDD](/images/posts/already-doing-tdd.png)
 
-Originally posted on the [Boltmade Blog](http://www.boltmade.com/blog/youre-already-doing-tdd)
-
-I recently watched Uncle Bob's talk [Architecture the Lost Years](https://www.youtube.com/watch?v=WpkDN78P884) on YouTube. At one point he stops and asks the audience who practices Test Driven Development (TDD). By his reaction, it's apparent that not many people have their hands up.
+I recently watched Bob Martin's talk [Architecture the Lost Years](https://www.youtube.com/watch?v=WpkDN78P884) on YouTube. At one point he stops and asks the audience who practices Test Driven Development (TDD). By his reaction, it's apparent that not many people have their hands up.
 
 Everyone without their hand up is wrong. They all do TDD. In fact, they have TDD'd every line of code they've ever written, and you have too.
 
-In my post [Red, Green, Refactor](http://www.boltmade.com/blog/red-green-refactor) we defined Test Driven Development as:
+In my post [Red, Green, Refactor]({{<ref "posts/2014-05-02-red-green-refactor.md">}}) we defined Test Driven Development as:
 
 > 1. <span>Write a failing test</span>
-2. <span>Write some code that passes the test</span>
-3. <span>Refactor</span>
+> 2. <span>Write some code that passes the test</span>
+> 3. <span>Refactor</span>
 
 So does everyone really do this? Let's take a look from the perspective of a bug being reported by a user in our system:
 

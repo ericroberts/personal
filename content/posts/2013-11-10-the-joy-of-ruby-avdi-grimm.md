@@ -1,5 +1,4 @@
 ---
-layout: post
 title:  "The Joy of Ruby - Avdi Grimm"
 date:   2013-11-10
 categories: ruby

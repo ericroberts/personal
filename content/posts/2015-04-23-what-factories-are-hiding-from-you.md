@@ -1,6 +1,7 @@
 ---
 layout: post
 title: What test factories are hiding from you
+date: 2015-04-23  
 ---
 
 Do you use test factories? You may be missing valuable feedback from your tests
@@ -53,7 +54,7 @@ in this post.
 
 Here's the test for the feature I've just described:
 
-{% highlight ruby linenos %}
+{{<highlight ruby>}}
 RSpec.describe Estimator do
   subject { customer.estimator }
   let(:customer) { create :customer }
@@ -67,11 +68,11 @@ RSpec.describe Estimator do
     end
   end
 end
-{% endhighlight %}
+{{</highlight>}}
 
 Here are the test factories:
 
-{% highlight ruby linenos %}
+{{<highlight ruby>}}
 FactoryGirl.define do
   factory :estimator do
   end
@@ -87,11 +88,11 @@ FactoryGirl.define do
     max 90
   end
 end
-{% endhighlight %}
+{{</highlight>}}
 
 And finally, here's the code that actually implements the feature:
 
-{% highlight ruby linenos %}
+{{<highlight ruby>}}
 class Estimator < ActiveRecord::Base
   has_many :customers
 
@@ -120,7 +121,7 @@ class Rate < ActiveRecord::Base
     self[:max] / 100.to_f
   end
 end
-{% endhighlight %}
+{{</highlight>}}
 
 Doesn't look too bad, does it? Let's see what we can discover by refusing to use
 factories.
@@ -131,7 +132,7 @@ We're going to write this without using factories at all. This means we will
 have to provide all the data ourselves. I'm going to choose to do this with
 stubs. Here's what the same test looks like when we stub all of our data:
 
-{% highlight ruby linenos %}
+{{<highlight ruby>}}
 RSpec.describe Estimator do
   subject { Estimator.new }
 
@@ -155,7 +156,7 @@ RSpec.describe Estimator do
     end
   end
 end
-{% endhighlight %}
+{{</highlight>}}
 
 Stubbing all of those methods is painful. And worse, if any of the methods being
 called change, we'll have to change the stubs. That's not very good. And yet, I
@@ -181,7 +182,7 @@ a Customer, so let's make it one.
 
 Here's the test for the new method on Customer:
 
-{% highlight ruby linenos %}
+{{<highlight ruby>}}
 RSpec.describe Customer do
   subject { Customer.new(revenue: 100) }
   let(:rate) { double }
@@ -201,11 +202,11 @@ RSpec.describe Customer do
     ]
   end
 end
-{% endhighlight %}
+{{</highlight>}}
 
 Then we can implement this method on Customer like so:
 
-{% highlight ruby linenos %}
+{{<highlight ruby>}}
 class Customer < ActiveRecord::Base
   belongs_to :rate
   belongs_to :estimator
@@ -217,11 +218,11 @@ class Customer < ActiveRecord::Base
     ]
   end
 end
-{% endhighlight %}
+{{</highlight>}}
 
 Now we can revisit our Estimator tests and update them to look like this:
 
-{% highlight ruby linenos %}
+{{<highlight ruby>}}
 RSpec.describe Estimator do
   subject { Estimator.new }
 
@@ -242,11 +243,11 @@ RSpec.describe Estimator do
     end
   end
 end
-{% endhighlight %}
+{{</highlight>}}
 
 And the updated Estimator code:
 
-{% highlight ruby linenos %}
+{{<highlight ruby>}}
 class Estimator < ActiveRecord::Base
   has_many :customers
 
@@ -258,13 +259,13 @@ class Estimator < ActiveRecord::Base
     end
   end
 end
-{% endhighlight %}
+{{</highlight>}}
 
 I think we've definitely made an improvement here. Estimator know only knows
 one method on Customer. But is there more we could do? Let's leave
 Estimator for a second and go back to our current tests for Customer.
 
-{% highlight ruby linenos %}
+{{<highlight ruby>}}
 RSpec.describe Customer do
   subject { Customer.new }
 
@@ -285,7 +286,7 @@ RSpec.describe Customer do
     end
   end
 end
-{% endhighlight %}
+{{</highlight>}}
 
 To me, this looks like Customer knows too much about Rate. Why does Customer
 care that Rate has a min and a max? What is it that we actually want to get
@@ -293,11 +294,11 @@ from customer? When you really think about it, we want to multiply a customer's
 revenue by a customer's rate. The fact that Rate happens to be represented with
 a minimum and maximum value shouldn't matter to us. This is the code we want:
 
-{% highlight ruby linenos %}
+{{<highlight ruby>}}
 def projection
   rate * revenue
 end
-{% endhighlight %}
+{{</highlight>}}
 
 So just how do we go about doing this? It's important to remember here that `*`
 is just another method. `1 * 2` is just syntax that calls the method `*` on `1`
@@ -308,7 +309,7 @@ really called `times`, it would look like this: `1.times(2)`.
 With that knowledge, we can go ahead and implement the `*` method on Rate.
 Here's our test:
 
-{% highlight ruby linenos %}
+{{<highlight ruby>}}
 RSpec.describe Rate do
   subject { Rate.new(min: min, max: max) }
   let(:min) { 80 }
@@ -325,11 +326,11 @@ RSpec.describe Rate do
     end
   end
 end
-{% endhighlight %}
+{{</highlight>}}
 
 And the implementation:
 
-{% highlight ruby linenos %}
+{{<highlight ruby>}}
 class Rate < ActiveRecord::Base
   def min
     self[:min] / 100.to_f
@@ -346,14 +347,14 @@ class Rate < ActiveRecord::Base
     ]
   end
 end
-{% endhighlight %}
+{{</highlight>}}
 
 Now we can multiply a Rate by some other number and get an Array back that
 contains the minimum and maximum values as applied to that other number.
 
 This now simplifies our code in Customer:
 
-{% highlight ruby linenos %}
+{{<highlight ruby>}}
 class Customer < ActiveRecord::Base
   belongs_to :rate
   belongs_to :estimator
@@ -362,7 +363,7 @@ class Customer < ActiveRecord::Base
     rate * revenue
   end
 end
-{% endhighlight %}
+{{</highlight>}}
 
 But what should we test now? One of the points of this was for Customer to know
 less about Rate. Right now however, our tests still know about Rate so we can
@@ -371,7 +372,7 @@ all? Rate already has a test that asserts what happens when you call the `*`
 method on it. Therefore, all we want to test here is that we called that method
 properly, and with the correct arguments. Now our Customer test looks like this:
 
-{% highlight ruby linenos %}
+{{<highlight ruby>}}
 RSpec.describe Customer do
   subject { Customer.new(revenue: revenue) }
   let(:revenue) { 100 }
@@ -389,12 +390,12 @@ RSpec.describe Customer do
   	end
   end
 end
-{% endhighlight %}
+{{</highlight>}}
 
 Now Customer looks simpler, and all it knows is that Rate has a `*` method. But
 what happens when we go back out to Estimator? What does it know still?
 
-{% highlight ruby linenos %}
+{{<highlight ruby>}}
 class Estimator < ActiveRecord::Base
   has_many :customers
 
@@ -406,13 +407,13 @@ class Estimator < ActiveRecord::Base
     end
   end
 end
-{% endhighlight %}
+{{</highlight>}}
 
 Estimator still knows what it is expection from the customer's projection
 method. Conceptually all we want to do is get the sum of the customer's
 projections. It would be nice if we could do something more like this:
 
-{% highlight ruby linenos %}
+{{<highlight ruby>}}
 class Estimator < ActiveRecord::Base
   has_many :customers
 
@@ -422,13 +423,13 @@ class Estimator < ActiveRecord::Base
     end
   end
 end
-{% endhighlight %}
+{{</highlight>}}
 
 So, let's make our code work like that! First, we're going to need an object
 that takes a min and a max itself and knows how to add other mins and maxes to
 it. For lack of a better name, we'll call it MinMax. Here's the test:
 
-{% highlight ruby linenos %}
+{{<highlight ruby>}}
 RSpec.describe MinMax do
   subject { MinMax.new(min, max) }
   let(:min) { 80 }
@@ -444,11 +445,11 @@ RSpec.describe MinMax do
     end
   end
 end
-{% endhighlight %}
+{{</highlight>}}
 
 And here's the implementation:
 
-{% highlight ruby linenos %}
+{{<highlight ruby>}}
 class MinMax
   attr_reader :min, :max
 
@@ -466,11 +467,11 @@ class MinMax
     new(0, 0)
   end
 end
-{% endhighlight %}
+{{</highlight>}}
 
 We can use this new class like this:
 
-{% highlight ruby linenos %}
+{{<highlight ruby>}}
 MinMax.new(1, 10)
 #=> #<MinMax:0x007ff19604e2e8 @min=1, @max=10>
 
@@ -482,11 +483,11 @@ MinMax.new(1, 10) + MinMax.new(2, 10)
 
 MinMax.new(1, 10) + [2, 10]
 #=> #<MinMax:0x007ff1950009b8 @min=3, @max=20>
-{% endhighlight %}
+{{</highlight>}}
 
 Now we can refactor Estimator like so:
 
-{% highlight ruby linenos %}
+{{<highlight ruby>}}
 class Estimator < ActiveRecord::Base
   has_many :customers
 
@@ -496,11 +497,11 @@ class Estimator < ActiveRecord::Base
     end
   end
 end
-{% endhighlight %}
+{{</highlight>}}
 
 Which can now be written even more succinctly as:
 
-{% highlight ruby linenos %}
+{{<highlight ruby>}}
 class Estimator < ActiveRecord::Base
   has_many :customers
 
@@ -508,11 +509,11 @@ class Estimator < ActiveRecord::Base
     customers.map(&:projection).inject(MinMax.zero, :+)
   end
 end
-{% endhighlight %}
+{{</highlight>}}
 
 And we're done! Now our final implementation code looks like this:
 
-{% highlight ruby linenos %}
+{{<highlight ruby>}}
 class Estimator < ActiveRecord::Base
   has_many :customers
 
@@ -564,7 +565,7 @@ class MinMax
     new(0, 0)
   end
 end
-{% endhighlight %}
+{{</highlight>}}
 
 We have a bit more code than before, but the complexity of individual pieces
 has gone down. One objection I sometimes run into when proposing refactorings
@@ -574,17 +575,17 @@ use the Ruby tool [Flog](https://github.com/seattlerb/flog).
 
 Here's the scores before the refactoring:
 
-{% highlight bash linenos %}
+{{<highlight bash>}}
 35.4: flog total
  5.9: flog/method average
 
 20.7: Estimator#projection             lib/estimator.rb:6
  4.1: Rate#min                         lib/rate.rb:4
-{% endhighlight %}
+{{</highlight>}}
 
 And after:
 
-{% highlight bash linenos %}
+{{<highlight bash>}}
 46.1: flog total
  3.8: flog/method average
 
@@ -593,7 +594,7 @@ And after:
  4.8: Rate#*                           lib/rate.rb:12
  4.4: main#none
  4.1: Rate#min                         lib/rate.rb:4
-{% endhighlight %}
+{{</highlight>}}
 
 As you can see, the overall complexity of the system went up, as expected. But
 now the most complex method is a little less than half of what it was before.
