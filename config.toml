@@ -1,4 +1,4 @@
-baseURL = "http://example.org/"
+baseURL = "https://naughty-swanson-d227ad.netlify.app"
 languageCode = "en-us"
 title = "My New Hugo Site"
 pygmentsUseClasses = true
