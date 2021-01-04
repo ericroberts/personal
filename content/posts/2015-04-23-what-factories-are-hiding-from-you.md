@@ -2,6 +2,7 @@
 layout: post
 title: What test factories are hiding from you
 date: 2015-04-23  
+slug: what-factories-are-hiding-from-you
 ---
 
 Do you use test factories? You may be missing valuable feedback from your tests

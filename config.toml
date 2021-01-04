@@ -3,6 +3,6 @@ languageCode = "en-us"
 title = "My New Hugo Site"
 pygmentsUseClasses = true
 [permalinks]
-  posts = "/:year/:month/:day/:title/"
+  posts = "/:year/:month/:day/:slug/"
 [markup.goldmark.renderer]
 	unsafe = true
