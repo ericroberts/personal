@@ -1,6 +1,7 @@
 ---
 title: Bug Free Software - Is it Possible?
 date: 2014-02-27
+slug: bug-free-software
 ---
 
 Recently the company I work at, [Boltmade](http://www.boltmade.com/), was undergoing a rebranding. Naturally we looked at the websites of other software development companies to see what they were saying about themselves. To me, one site stood out. [8th Light](http://8thlight.com/) says in their [company principles](http://www.8thlight.com/principles) that, "we take responsibility for the correctness of our code by testing it thoroughly. We do not tolerate preventable defects". Going further, the [blog post](http://blog.8thlight.com/eric-smith/2013/04/08/we-are-principled-6.html) that accompanies this says, "if we make a mistake, we'll fix it quickly—for free. It's that simple".
