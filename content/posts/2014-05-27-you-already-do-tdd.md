@@ -2,6 +2,7 @@
 title: You're Already Doing TDD
 date: 2014-05-27
 visible: no
+slug: you-already-do-tdd
 ---
 
 
