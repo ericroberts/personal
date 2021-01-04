@@ -1,6 +1,7 @@
 ---
 title:  "How to Turn Your Raspberry Pi Into a Wireless AirPlay Reciever"
 date:   2013-11-04
+slug: how-to-turn-your-raspberry-pi-into-a-wireless-airplay-receiver
 ---
 
 A while ago I had some brilliant idea to do something, so I bought two [Raspberry Pi's](http://www.raspberrypi.org/). Because I never follow up on things, they were still sitting in their packaging nearly a year later. Then someone brought one into [ArtBarn Labs](http://artbarnlabs.com/), where I work, and we started using it as an AirPlay receiver. It was pretty cool, so I demoed it at [DemoCampGuelph](http://www.democampguelph.com/). But it took a while to get working, so I figured I'd document the process.
