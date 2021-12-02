@@ -1,5 +1,6 @@
 ---
 type: page
+layout: shopify
 ---
 
 # Hi!
