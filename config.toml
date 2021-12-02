@@ -2,6 +2,7 @@ baseURL = "https://ericroberts.ca"
 languageCode = "en-us"
 title = "My New Hugo Site"
 pygmentsUseClasses = true
+enableRobotsTXT = false
 [permalinks]
   posts = "/:year/:month/:day/:slug/"
 [markup.goldmark.renderer]
