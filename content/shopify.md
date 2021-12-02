@@ -1,5 +1,5 @@
 ---
-type: page
+type: shopify
 layout: shopify
 ---
 
