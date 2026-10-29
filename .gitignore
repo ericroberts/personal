@@ -1,2 +1,12 @@
-node_modules/*
+# Node dependencies
+/node_modules/
+
+# Hugo build output and generated asset cache
+/public/
+/resources/_gen/
+/.hugo_build.lock
+
+# Local editor and macOS files
 *.swp
+*.swo
+.DS_Store
